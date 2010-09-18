@@ -5,11 +5,14 @@ I write source code about anagram using clojure language.
 
 ## Usage
 
-
+1. lein repl
+2. (use 'anagram.core)
+3. (test-main-anagram "earth" 30)
+4. end
 
 ## Installation
 
-
+1. lein install
 
 ## License
 

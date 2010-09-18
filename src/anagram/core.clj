@@ -48,4 +48,4 @@
 	 dst)))
 
 (defn test-main-anagram [word count]
-  (apply hash-set (filter string? (map is-anagram? (repeat word) (test-correct-words word count)))))
+  (distinct (filter string? (map is-anagram? (repeat word) (test-correct-words word count)))))
