@@ -11,10 +11,6 @@ I write source code about anagram using clojure language.
 3. (test-main-anagram "earth" 30)
 4. end
 
-## Installation
-
-1. lein install
-
 ## License
 
 Copyright (C) 2010 rafael
