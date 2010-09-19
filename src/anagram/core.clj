@@ -1,7 +1,7 @@
 (ns
     #^{:author "ChangMin Jeon",
        :doc "generate anagram.
-       http://github.com/rafael81/clojure.contrib.rafael"}
+       http://github.com/rafael81/clj-anagram"}
   anagram.core
   (:use [clojure.contrib.repl-utils :only (show source)]	
         [anagram.spell-corrector]))
@@ -49,3 +49,4 @@
 
 (defn test-main-anagram [word count]
   (distinct (filter string? (map is-anagram? (repeat word) (test-correct-words word count)))))
+
