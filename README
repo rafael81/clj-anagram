@@ -5,11 +5,11 @@ I write source code about anagram using clojure language.
 
 ## Usage
 
-0. lein deps
-1. lein repl
-2. (use 'anagram.core)
-3. (test-main-anagram "earth" 30)
-4. end
+1. lein deps
+2. lein repl
+3. (use 'anagram.core)
+4. (test-main-anagram "eager" 100)
+5. enjoy!
 
 ## Installation
 
