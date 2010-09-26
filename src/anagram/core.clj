@@ -19,7 +19,7 @@
 (defn test-rand-words [word count]
   (take count (iterate rand-word word)))
 
-;;; thread code using atom
+;;; thread code using agent
 
 (def agent-rand-words (agent ()))
 
@@ -32,7 +32,7 @@
 (defn test-agent-work-thread [word count]
   (map agent-work-thread (test-rand-words word count) (repeat *nwords*) (range 1 (+ count 1))))
 
-;;;; thread code using atom
+;;;; thread code using agent
 
 (defn is-anagram? [src dst]
   (let [pred-list (map #(.contains dst (str %)) src)]
