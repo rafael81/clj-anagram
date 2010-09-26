@@ -19,34 +19,28 @@
 (defn test-rand-words [word count]
   (take count (iterate rand-word word)))
 
-(def ref-rand-words (ref ()))
+;;; thread code using atom
 
-(defn alter-work-thread [word words]
-      (.start (Thread. (fn [] (dosync (alter ref-rand-words conj (correct word words)))))))
+(def agent-rand-words (agent ()))
 
-(def atom-rand-words (atom ()))
+(defn agent-work-thread [word words number]
+      (.start (Thread. (fn [] (let [correct-word (correct word words)]
+				(if-not (= word correct-word)
+				  (send agent-rand-words conj correct-word))))))
+      (println (format "make thread %d" number)))
 
-(defn reset-atom-rand-words [] (reset! atom-rand-words ()))
+(defn test-agent-work-thread [word count]
+  (map agent-work-thread (test-rand-words word count) (repeat *nwords*) (range 1 (+ count 1))))
 
-(def ref-atom-rand-words (ref atom-rand-words))
-
-(defn atom-work-thread [word words]
-      (.start (Thread. (fn [] (swap! atom-rand-words conj (correct word words))))))
-
-(defn test-atom-work-thread [word count]
-  (map atom-work-thread (test-rand-words word count) (repeat *nwords*)))
-
-(defn test-correct-words [word count]
-  (let [rand-words (test-rand-words word count)]
-    (filter string? (for [elt rand-words] (let [correct-word (correct elt *nwords*)]
-				     (if-not (= elt correct-word)
-				       correct-word))))))
+;;;; thread code using atom
 
 (defn is-anagram? [src dst]
   (let [pred-list (map #(.contains dst (str %)) src)]
     (and (= (count src) (count dst)) (every? true? pred-list)
 	 dst)))
 
-(defn test-main-anagram [word count]
-  (distinct (filter string? (map is-anagram? (repeat word) (test-correct-words word count)))))
+(defn test-main-anagram [word cnt]
+  (dorun (test-agent-work-thread word cnt)) ;; to prevent map's return 
+  (await agent-rand-words)
+  (distinct (filter string? (map is-anagram? (repeat word) @agent-rand-words))))
 
